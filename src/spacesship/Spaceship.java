@@ -18,12 +18,13 @@ public class Spaceship {
     private double altitude_from_moon;
     private double dt;
     private double accelerate;
-    private double landing_fuel;
+    private double fuel_amount;
     private double actual_weight;
     private double NN = 0.7;
+    private PID pid_controller;
 
 
-    public Spaceship(double vs, double hs, double dfe, double ang, double alt, double dt, double acc, double lf){
+    public Spaceship(double vs, double hs, double dfe, double ang, double alt, double dt, double acc, double fl) {
         vertical_speed = vs;
         horizontal_speed = hs;
         distance_from_earth = dfe;
@@ -31,8 +32,36 @@ public class Spaceship {
         altitude_from_moon = alt;
         this.dt = dt;
         accelerate = acc;
-        landing_fuel = lf;
-        actual_weight = WEIGHT_CRAFT + landing_fuel;
+        fuel_amount = fl;
+        actual_weight = WEIGHT_CRAFT + fuel_amount;
+        createController();
+    }
+
+    private void createController() {
+        pid_controller = new PID(1, 0.1, 0.1);
+        pid_controller.setOutputLimits(3);
+        //miniPID.setMaxIOutput(2);
+        //miniPID.setOutputRampRate(3);
+        //miniPID.setOutputFilter(.3);
+        pid_controller.setSetpointRange(2);
+    }
+
+    public void printInfo() {
+        System.out.printf(
+                "time: %3.2f, vs: %3.2f, hs: %3.2f, dist: %3.2f, alt: %3.2f, ang: %3.2f, wgt: %3.2f, acc: %3.2f\n",
+                round(dt),
+                round(vertical_speed),
+                round(horizontal_speed),
+                round(distance_from_earth),
+                round(altitude_from_moon),
+                round(angle),
+                round(actual_weight),
+                round(accelerate)
+        );
+    }
+
+    public PID getPidController(){
+        return pid_controller;
     }
 
     public double getVerticalSpeed() {
@@ -47,11 +76,11 @@ public class Spaceship {
         return horizontal_speed;
     }
 
-    public void setHorizontalSpeed(double hs){
+    public void setHorizontalSpeed(double hs) {
         horizontal_speed = hs;
     }
 
-    public void changeHorizontalSpeed(double fix){
+    public void changeHorizontalSpeed(double fix) {
         horizontal_speed += fix;
     }
 
@@ -59,7 +88,7 @@ public class Spaceship {
         return distance_from_earth;
     }
 
-    public void changeDistanceFromEarth(double fix){
+    public void changeDistanceFromEarth(double fix) {
         distance_from_earth += fix;
     }
 
@@ -67,11 +96,11 @@ public class Spaceship {
         return angle;
     }
 
-    public void fixAngle(double fix){
+    public void fixAngle(double fix) {
         angle += fix;
     }
 
-    public void setAngle(double ang){
+    public void setAngle(double ang) {
         angle = ang;
     }
 
@@ -91,35 +120,35 @@ public class Spaceship {
         return accelerate;
     }
 
-    public void setAccelerate(double acc){
+    public void setAccelerate(double acc) {
         accelerate = acc;
     }
 
-    public void changeAccelerate(double fix){
+    public void changeAccelerate(double fix) {
         accelerate += fix;
     }
 
-    public double getLandingFuel(){
-        return landing_fuel;
+    public double getFuelAmount() {
+        return fuel_amount;
     }
 
-    public void setLandingFuel(double lf){
-        landing_fuel = lf;
+    public void setFuelAmount(double lf) {
+        fuel_amount = lf;
     }
 
-    public void changeLandingFuel(double fix){
-        landing_fuel += fix;
+    public void changeFuelAmount(double fix) {
+        fuel_amount += fix;
     }
 
     public double getActualWeight() {
         return actual_weight;
     }
 
-    public void setActualWeight(double w){
+    public void setActualWeight(double w) {
         actual_weight = w;
     }
 
-    public void changeActualWeight(double fix){
+    public void changeActualWeight(double fix) {
         actual_weight += fix;
     }
 
@@ -133,5 +162,15 @@ public class Spaceship {
 
     public void changeNN(double nn) {
         NN += nn;
+    }
+
+    private double round(double value) {
+        int places = 2;
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 }
