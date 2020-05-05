@@ -1,5 +1,7 @@
 package spacesship;
 
+
+//another pid controller code - https://github.com/bryankate/simbeeotic/blob/master/simbeeotic-core/src/main/java/harvard/robobees/simbeeotic/util/PIDController.java
 public class Spaceship {
 
     public static final double WEIGHT_CRAFT = 165; // kg
@@ -13,7 +15,7 @@ public class Spaceship {
 
     private double vertical_speed;
     private double horizontal_speed;
-    private double distance_from_earth;
+    private double distance_from_destination;
     private double angle;
     private double altitude_from_moon;
     private double dt;
@@ -27,7 +29,7 @@ public class Spaceship {
     public Spaceship(double vs, double hs, double dfe, double ang, double alt, double dt, double acc, double fl) {
         vertical_speed = vs;
         horizontal_speed = hs;
-        distance_from_earth = dfe;
+        distance_from_destination = dfe;
         angle = ang;
         altitude_from_moon = alt;
         this.dt = dt;
@@ -39,11 +41,11 @@ public class Spaceship {
 
     private void createController() {
         pid_controller = new PID(1, 0.1, 0.1);
-        pid_controller.setOutputLimits(3);
+        pid_controller.setOutputLimits(1);
         //miniPID.setMaxIOutput(2);
         //miniPID.setOutputRampRate(3);
         //miniPID.setOutputFilter(.3);
-        pid_controller.setSetpointRange(2);
+        pid_controller.setSetpointRange(0.1);
     }
 
     public void printInfo() {
@@ -52,7 +54,7 @@ public class Spaceship {
                 round(dt),
                 round(vertical_speed),
                 round(horizontal_speed),
-                round(distance_from_earth),
+                round(distance_from_destination),
                 round(altitude_from_moon),
                 round(angle),
                 round(actual_weight),
@@ -84,20 +86,20 @@ public class Spaceship {
         horizontal_speed += fix;
     }
 
-    public double getDistanceFromEarth() {
-        return distance_from_earth;
+    public double getDistanceFromDestination() {
+        return distance_from_destination;
     }
 
-    public void changeDistanceFromEarth(double fix) {
-        distance_from_earth += fix;
+    public void changeDistanceFromDestination(double fix) {
+        distance_from_destination += fix;
     }
 
     public double getAngle() {
         return angle;
     }
 
-    public void fixAngle(double fix) {
-        angle += fix;
+    public void changeAngle(double fix) {
+        angle = (angle + fix) % 360;
     }
 
     public void setAngle(double ang) {

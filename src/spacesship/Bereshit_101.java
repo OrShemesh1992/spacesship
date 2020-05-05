@@ -14,11 +14,13 @@ public class Bereshit_101 {
     }
 
     public static double acc(double weight, boolean main, int seconds_engines) {
-//        if (main) {
-//            t += MAIN_ENGINE_POWER;
-//        }
+
         double force = 0;
-        force += Spaceship.MAIN_ENGINE_POWER;
+
+        if (main) {
+            force += Spaceship.MAIN_ENGINE_POWER;
+        }
+//        force += Spaceship.MAIN_ENGINE_POWER;
         force += seconds_engines * Spaceship.SECOND_ENGINE_POWER;
         double ans = force / weight;
         return ans;
@@ -61,18 +63,22 @@ public class Bereshit_101 {
             // lower than 2 km - horizontal speed should be close to zero
             else {
                 if (bereshit.getAngle() > 3) {
-                    bereshit.fixAngle(-3);
+                    bereshit.changeAngle(-3);
                 } // rotate to vertical position.
                 else {
-                    bereshit.setAngle(0);
+                    bereshit.setAngle(0); // | - 0, _ - 90
                 }
+
                 bereshit.setNN(0.5); // brake slowly, a proper PID controller here is needed!
+
                 if (bereshit.getHorizontalSpeed() < 2) {
                     bereshit.setHorizontalSpeed(0);
                 }
 
                 if (bereshit.getAltitudeFromMoon() < 125) { // very close to the ground!
+
                     bereshit.setNN(1); // maximum braking!
+
                     if (bereshit.getVerticalSpeed() < 5) {
                         bereshit.setNN(0.7);
                     } // if it is slow enough - go easy on the brakes
@@ -86,8 +92,10 @@ public class Bereshit_101 {
 
             // main computations
             double angle_radian = Math.toRadians(bereshit.getAngle());
+
             double horizontal_accelerate = Math.sin(angle_radian) * bereshit.getAccelerate();
             double vertical_accelerate = Math.cos(angle_radian) * bereshit.getAccelerate();
+
             double vertical_moon_gravity = Moon.getAcc(bereshit.getHorizontalSpeed());
 
             time += bereshit.getDt();
@@ -97,7 +105,7 @@ public class Bereshit_101 {
             if (bereshit.getFuelAmount() > 0) {
                 bereshit.changeFuelAmount(-dw);
                 bereshit.setActualWeight(Spaceship.WEIGHT_CRAFT + bereshit.getFuelAmount());
-                bereshit.setAccelerate(bereshit.getNN() * accMax(bereshit.getActualWeight()));
+                bereshit.setAccelerate(bereshit.getNN() * accMax(bereshit.getActualWeight())); //calc accelerate
             } else { // ran out of fuel
                 bereshit.setAccelerate(0);
             }
@@ -108,9 +116,10 @@ public class Bereshit_101 {
                 bereshit.changeHorizontalSpeed(-1 * horizontal_accelerate * bereshit.getDt());
             }
 
-            bereshit.changeDistanceFromEarth(-1 * bereshit.getHorizontalSpeed() * bereshit.getDt());
+            bereshit.changeDistanceFromDestination(-1 * bereshit.getHorizontalSpeed() * bereshit.getDt());
             bereshit.changeVerticalSpeed(-1 * vertical_accelerate * bereshit.getDt());
             bereshit.changeAltitudeFromMoon(-1 * bereshit.getDt() * bereshit.getVerticalSpeed());
         }
+        System.out.println(time);
     }
 }
