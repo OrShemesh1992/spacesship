@@ -90,6 +90,7 @@ public class Bereshit_101 {
                 bereshit.setNN(0.4);
             }
 
+
             // main computations
             double angle_radian = Math.toRadians(bereshit.getAngle());
 
