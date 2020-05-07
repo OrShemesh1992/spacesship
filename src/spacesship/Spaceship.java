@@ -40,7 +40,7 @@ public class Spaceship {
     }
 
     private void createController() {
-        pid_controller = new PID(1, 0.1, 0.1);
+        pid_controller = new PID(0.25, 0.01, 0.4);
         pid_controller.setOutputLimits(1);
         //miniPID.setMaxIOutput(2);
         //miniPID.setOutputRampRate(3);
@@ -51,19 +51,41 @@ public class Spaceship {
     public void printInfo() {
         System.out.printf(
                 "time: %3.2f, vs: %3.2f, hs: %3.2f, dist: %3.2f, alt: %3.2f, ang: %3.2f, wgt: %3.2f, acc: %3.2f\n",
-                round(dt),
-                round(vertical_speed),
-                round(horizontal_speed),
-                round(distance_from_destination),
-                round(altitude_from_moon),
-                round(angle),
-                round(actual_weight),
-                round(accelerate)
+                Utils.round(dt),
+                Utils.round(vertical_speed),
+                Utils.round(horizontal_speed),
+                Utils.round(distance_from_destination),
+                Utils.round(altitude_from_moon),
+                Utils.round(angle),
+                Utils.round(actual_weight),
+                Utils.round(accelerate)
         );
     }
 
-    public PID getPidController(){
+    public PID getPidController() {
         return pid_controller;
+    }
+
+    public double fullPowerLanding() {
+        return Formulas.calcAccelerate(actual_weight, true, 8);
+    }
+
+    public double smartLanding(boolean main_engine, double seconds_engine) {
+        return Formulas.calcAccelerate(actual_weight, main_engine, seconds_engine);
+    }
+
+    public Point getPosition() {
+        return new Point(distance_from_destination, altitude_from_moon);
+    }
+
+    public Point getNextPosition(double t) {
+        return Formulas.calcNextPoint(
+                distance_from_destination,
+                altitude_from_moon,
+                Moon.GRAVITY_ACCELERATION,
+                horizontal_speed,
+                vertical_speed,
+                t);
     }
 
     public double getVerticalSpeed() {
@@ -164,15 +186,5 @@ public class Spaceship {
 
     public void changeNN(double nn) {
         NN += nn;
-    }
-
-    private double round(double value) {
-        int places = 2;
-        if (places < 0) throw new IllegalArgumentException();
-
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
     }
 }

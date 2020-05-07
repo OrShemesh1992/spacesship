@@ -10,7 +10,7 @@ public class Main {
         int i = 0;
 
         while (bereshit.getAltitudeFromMoon() > 1 || bereshit.getFuelAmount() > 0) {
-            if(i++ % 100 == 0){
+            if(i++ % 10 == 0){
                 bereshit.printInfo();
             }
 
