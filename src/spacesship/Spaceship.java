@@ -39,13 +39,17 @@ public class Spaceship {
         createController();
     }
 
+//    private void createController() {
+//        pid_controller = new PID(0.25, 0.01, 0.4);
+//        pid_controller.setOutputLimits(1);
+//        //miniPID.setMaxIOutput(2);
+//        //miniPID.setOutputRampRate(3);
+//        //miniPID.setOutputFilter(.3);
+//        pid_controller.setSetpointRange(0.1);
+//    }
+    
     private void createController() {
-        pid_controller = new PID(0.25, 0.01, 0.4);
-        pid_controller.setOutputLimits(1);
-        //miniPID.setMaxIOutput(2);
-        //miniPID.setOutputRampRate(3);
-        //miniPID.setOutputFilter(.3);
-        pid_controller.setSetpointRange(0.1);
+    	pid_controller = new PID(0, 1, 1, 1);
     }
 
     public void printInfo() {

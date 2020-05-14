@@ -1,7 +1,10 @@
 package spacesship;
 
 public class Formulas {
-
+//https://he.wikipedia.org/wiki/%D7%A0%D7%95%D7%A1%D7%97%D7%AA_%D7%A6%D7%99%D7%90%D7%95%D7%9C%D7%A7%D7%95%D7%91%D7%A1%D7%A7%D7%99
+	public static double calcTsiolkovsky(double v0,double ve,double m0,double mf ) {
+		return v0-ve*Math.log(m0/mf);
+	}
     public static double calcDegreesOfLanding(double hs, double vs) {
         double s = calcSpeed(vs, hs);
         s = vs / s;
@@ -53,8 +56,11 @@ public class Formulas {
 
     private static double calcNextVerticalPoint(double y, double grav, double vy, double deg, double t) {
 //        double hs = calcVerticalSpeed(vy, deg, 1);
-        double hs = vy * Math.sin(Math.toRadians(deg));
-        double new_y = y - hs * t - 0.5 * grav * t * t;
+        double vs = vy * Math.sin(Math.toRadians(deg));
+        double new_y = y - vs * t - 0.5 * grav * t * t;
         return new_y;
     }
+	public static double getDisplacement( double dt, double vel, double acc ) {
+		return vel * dt + acc * dt * dt / 2;
+	}
 }

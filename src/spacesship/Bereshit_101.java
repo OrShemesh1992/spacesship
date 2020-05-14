@@ -14,16 +14,19 @@ public class Bereshit_101 {
 
         System.out.println("Simulating Bereshit's Landing:");
         System.out.println("time, vs, hs, dist, alt, ang, weight, acc");
-        double time = 0;
+        long time = 0;
 
         // ***** main simulation loop ******
         while (bereshit.getAltitudeFromMoon() > 0) {
 
             if (time % 10 == 0 || bereshit.getAltitudeFromMoon() < 100) {
 //                bereshit.printInfo();
-                System.out.println(bereshit.getPosition() + " - " + bereshit.getNextPosition(10));
+//                System.out.println(bereshit.getPosition() + " - " + bereshit.getNextPosition(10));
+                //System.out.println(bereshit.getPidController().update(time, bereshit.getDistanceFromDestination()));
+//            }
+            	//bereshit.getPidController().update(time, bereshit.getDistanceFromDestination());
             }
-
+           System.out.println(bereshit.getPidController().update(time, bereshit.getDistanceFromDestination()));
 
             // over 2 km above the ground
             if (bereshit.getAltitudeFromMoon() > 2000) {    // maintain a vertical speed of [20-25] m/s
