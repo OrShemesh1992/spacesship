@@ -16,7 +16,7 @@ public class PID {
     private double iGain;
     private double dGain;
 
-    private long lastTime;
+    private double lastTime;
     private double lastError = 0;
     private double integral = 0;
 
@@ -47,7 +47,7 @@ public class PID {
      *
      * @return The PID output.
      */
-    public Double update(long currTime, double currValue) {
+    public Double update(double currTime, double currValue) {
 
         if (lastTime == 0) {
 
@@ -57,7 +57,9 @@ public class PID {
             return null;
         }
 
-        double dt = (double)(currTime - lastTime) / TimeUnit.SECONDS.toNanos(1);
+//        double dt = (double)(currTime - lastTime) / TimeUnit.SECONDS.toNanos(1);
+        //in this point - last point
+        double dt = (double)(currTime - lastTime);
 
         if (dt == 0) {
             return null;
@@ -70,7 +72,8 @@ public class PID {
         lastTime = currTime;
         lastError = error;
 
-        return (pGain * error) + (iGain * integral) + (dGain * deriv);
+        double ans = (pGain * error) + (iGain * integral) + (dGain * deriv);
+        return ans;
     }
 
 

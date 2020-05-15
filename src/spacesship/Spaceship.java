@@ -47,9 +47,9 @@ public class Spaceship {
 //        //miniPID.setOutputFilter(.3);
 //        pid_controller.setSetpointRange(0.1);
 //    }
-    
+
     private void createController() {
-    	pid_controller = new PID(0, 1, 1, 1);
+        pid_controller = new PID(0, 0.1, 0.03, 0.1);
     }
 
     public void printInfo() {
@@ -71,11 +71,23 @@ public class Spaceship {
     }
 
     public double fullPowerLanding() {
-        return Formulas.calcAccelerate(actual_weight, true, 8);
+        double acc = Formulas.calcAccelerate(actual_weight, true, 8);
+        burnFuel(true, 8);
+        return acc;
     }
 
-    public double smartLanding(boolean main_engine, double seconds_engine) {
-        return Formulas.calcAccelerate(actual_weight, main_engine, seconds_engine);
+    public double smartLanding(boolean main_engine, double seconds_engines) {
+        double acc = Formulas.calcAccelerate(actual_weight, main_engine, seconds_engines);
+        burnFuel(main_engine, seconds_engines);
+        return acc;
+    }
+
+    private void burnFuel(boolean main_engine, double seconds_engines) {
+        if (main_engine) {
+            fuel_amount -= MAIN_ENGINE_CONSUMPTION;
+        }
+        fuel_amount -= (SECOND_ENGINE_CONSUMPTION * seconds_engines);
+        setActualWeight(WEIGHT_CRAFT + fuel_amount);
     }
 
     public Point getPosition() {
@@ -106,6 +118,10 @@ public class Spaceship {
 
     public void setHorizontalSpeed(double hs) {
         horizontal_speed = hs;
+    }
+
+    public void setVerticalSpeed(double vs) {
+        vertical_speed = vs;
     }
 
     public void changeHorizontalSpeed(double fix) {
