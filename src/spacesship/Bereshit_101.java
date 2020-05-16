@@ -21,9 +21,13 @@ public class Bereshit_101 {
         double hs = 900;
         double vs = 25;
         double brake = 10;
+
+        double nn = 0;
         // ***** main simulation loop ******
 //        while (bereshit.getAltitudeFromMoon() > 0) {
-        while (bereshit.getDistanceFromDestination() > 50) {
+        while (bereshit.getDistanceFromDestination() > 50
+                && bereshit.getHorizontalSpeed() > 1
+                && bereshit.getVerticalSpeed() > 1) {
 
             if (time % 10 == 0 || bereshit.getAltitudeFromMoon() < 100) {
 //                bereshit.printInfo();
@@ -31,53 +35,51 @@ public class Bereshit_101 {
                 //System.out.println(bereshit.getPidController().update(time, bereshit.getDistanceFromDestination()));
 //            }
                 //bereshit.getPidController().update(time, bereshit.getDistanceFromDestination());
+
+                bereshit.printInfo();
             }
 
             Double pid_result = bereshit.getPidController().update(time, bereshit.getDistanceFromDestination());
             if (pid_result != null) pid_result = Math.abs(pid_result);
 //            System.out.println("PID: " + pid_result);
 
-            double dist_result = bereshit.getPosition().getX() - bereshit.getNextPosition(time).getX();
+            double dist_result = 181000 - bereshit.getNextPosition(time).getX();
 //            System.out.println("Real dif: " + dist_result);
 
 
-            bereshit.changeAltitudeFromMoon(-vs);
-            bereshit.changeDistanceFromDestination(-hs);
-            bereshit.setHorizontalSpeed(hs);
+//            bereshit.changeAltitudeFromMoon(-vs);
+//            bereshit.changeDistanceFromDestination(-hs);
+//            bereshit.setVerticalSpeed(vs);
+//            //horizontal speed corrections
+//            if (pid_result != null) {
+//                if (bereshit.getDistanceFromDestination() < 10000 && bereshit.getHorizontalSpeed() > 200) {
+//                    //more break
+//                    brake += 5;
+//                }
+//                double minus_speed = brake * (dist_result / pid_result);
+//                hs = hs - minus_speed;
+//            } else {
+//                hs -= 100;
+//            }
+//            //start vertical landing
+//            if (bereshit.getAltitudeFromMoon() < 1000) {
+//                vs *= 0.96;
+//                //vertical landing
+//                if (bereshit.getHorizontalSpeed() < 1) {
+//                    vs *= 0.99;
+//                }
+//            }
+//            bereshit.setHorizontalSpeed(hs);
 //            bereshit.setVerticalSpeed(vs);
 
-            System.out.println("alt: " + bereshit.getAltitudeFromMoon());
-            System.out.println("dist: " + bereshit.getDistanceFromDestination());
-            System.out.println("hs: " + hs);
-            System.out.println("vs: " + vs);
-
-            //horizontal speed corrections
             if (pid_result != null) {
-                if (bereshit.getDistanceFromDestination() < 10000 && bereshit.getHorizontalSpeed() > 200) {
-                    //more break
-                    brake += 5;
-                }
-
-                double minus_speed = brake * (dist_result / pid_result);
-                hs = hs - minus_speed;
-            } else {
-                hs -= 100;
+                double minus_speed = (dist_result / pid_result);
+                bereshit.setNN(0.9);
             }
-
-            //start vertical landing
-            if (bereshit.getAltitudeFromMoon() < 1000) {
-                vs *= 0.99;
-                //vertical landing
-                if (bereshit.getHorizontalSpeed() < 1) {
-                    vs *= 0.99;
-                }
-            }
-
-
-
-
-
+            bereshit.smartLanding();
             time++;
+
+
             // over 2 km above the ground
 //            if (bereshit.getAltitudeFromMoon() > 2000) {    // maintain a vertical speed of [20-25] m/s
 //                if (bereshit.getVerticalSpeed() > 25) {
@@ -147,6 +149,7 @@ public class Bereshit_101 {
 //            bereshit.changeVerticalSpeed(-1 * vertical_accelerate * bereshit.getDt());
 //            bereshit.changeAltitudeFromMoon(-1 * bereshit.getDt() * bereshit.getVerticalSpeed());
         }
+        bereshit.printInfo();
         System.out.println(time);
 
     }
