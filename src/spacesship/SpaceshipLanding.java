@@ -3,106 +3,119 @@ package spacesship;
 @SuppressWarnings("Duplicates")
 public class SpaceshipLanding implements SpaceshipActions {
 
-    Spaceship spaceship;
+    private Spaceship spaceship;
+    private int landing_time;
+    private double power = 0;
 
     public SpaceshipLanding(Spaceship spaceship) {
+        this.landing_time = 0;
         this.spaceship = spaceship;
     }
 
     @Override
     public void landing() {
-    	
-//    	if(spaceship.getAltitudeFromMoon()>10000) {
-    		
-    		
-    		
-    		
-    		//-> hs>1000
-//    	}
-//		if(8000<alt&&alt<10000) {
-//			if(spaceship.getVerticalSpeed()>800) {
-//				
-//			}
-//			
-//			
-//		//	-> 800< hs <1000
-//			
-//		}
-//    	if(6000<alt&&alt<8000) -> 600< hs <800
-//      	if(4000<alt&&alt<6000) -> 400< hs <600
-//      
-//      	if(2000<alt&&alt<4000) -> 200< hs <400
-//      
-//      	if(1000<alt&&alt<2000) -> 50< hs <200
-//      	if(100<alt&&alt<1000) -> 0< hs <50
 
-    	   // over 2 km above the ground
-        if (spaceship.getAltitudeFromMoon() > 2000) {    // maintain a vertical speed of [20-25] m/s
-            if (spaceship.getVerticalSpeed() > 25) {
-                spaceship.changeNN(0.003 * spaceship.getDt());
-            } // more power for braking
-            if (spaceship.getVerticalSpeed() < 20) {
-                spaceship.changeNN(-0.003 * spaceship.getDt());
-            } // less power for braking
-        }
-        // lower than 2 km - horizontal speed should be close to zero
-        else {
-            if (spaceship.getAngle() > 3) {
-                spaceship.changeAngle(-3);
-            } // rotate to vertical position.
-            else {
-                spaceship.setAngle(0); // | - 0, _ - 90
-            }
+        Double pid_result = spaceship.getPidController().update(landing_time, spaceship.getDistanceFromDestination());
+        if (pid_result != null) pid_result = Math.abs(pid_result);
 
-            spaceship.setNN(0.5); // brake slowly, a proper PID controller here is needed!
+        double dist_result = spaceship.getStartDistanceFromDestination() - spaceship.getNextPosition(landing_time).getX();
 
-            if (spaceship.getHorizontalSpeed() < 2) {
-                spaceship.setHorizontalSpeed(0);
-            }
-
-            if (spaceship.getAltitudeFromMoon() < 125) { // very close to the ground!
-
-                spaceship.setNN(1); // maximum braking!
-
-                if (spaceship.getVerticalSpeed() < 5) {
-                    spaceship.setNN(0.7);
-                } // if it is slow enough - go easy on the brakes
-            }
+        if (pid_result != null) {
+            double minus_speed = (dist_result / pid_result);
+            spaceship.setNN(minus_speed);
         }
 
-
-        if (spaceship.getAltitudeFromMoon() < 5) { // no need to stop
-            spaceship.setNN(0.4);
+        power = power + 0.01;
+        if(power > 1){
+            power = 1;
         }
 
-        // main computations
-        double angle_radian = Math.toRadians(spaceship.getAngle());
+        boolean main_engine = false;
+        double seconds_engines = 0;
 
-        double horizontal_accelerate = Math.sin(angle_radian) * spaceship.getAccelerate();
-        double vertical_accelerate = Math.cos(angle_radian) * spaceship.getAccelerate();
-
-        double vertical_moon_gravity = Moon.getAcc(spaceship.getHorizontalSpeed());
-
-        double dw = spaceship.getDt() * Spaceship.ALL_ENGINE_START * spaceship.getNN();
-
-        if (spaceship.getFuelAmount() > 0) {
-            spaceship.changeFuelAmount(-dw);
-            spaceship.setActualWeight(Spaceship.WEIGHT_CRAFT + spaceship.getFuelAmount());
-            spaceship.setAccelerate(spaceship.getNN() * spaceship.fullPowerLanding());
-        } else { // ran out of fuel
-            spaceship.setAccelerate(0);
+        if (spaceship.getNN() >= 0.85) {
+            main_engine = true;
+            seconds_engines = 8;
+//            fullPowerLanding();
+//            return;
+        } else if (0.7 <= spaceship.getNN() && spaceship.getNN() < 0.85) {
+            main_engine = true;
+            seconds_engines = 4;
+        } else if (0.3 <= spaceship.getNN() && spaceship.getNN() < 0.7) {
+            main_engine = true;
+        } else if (0.15 <= spaceship.getNN() && spaceship.getNN() < 0.3) {
+            seconds_engines = 8;
+        } else if (spaceship.getNN() < 0.15) {
+            seconds_engines = 4;
         }
 
-        vertical_accelerate -= vertical_moon_gravity;
+        double acc = Formulas.calcAccelerate(spaceship.getActualWeight(), main_engine, seconds_engines);
+        updateSpeed(acc);
+        updatePlace();
+        burnFuel(main_engine, seconds_engines);
 
-        if (spaceship.getHorizontalSpeed() > 0) {
-            spaceship.changeHorizontalSpeed(-1 * horizontal_accelerate * spaceship.getDt());
-        }
-
-        spaceship.changeDistanceFromDestination(-1 * spaceship.getHorizontalSpeed() * spaceship.getDt());
-        spaceship.changeVerticalSpeed(-1 * vertical_accelerate * spaceship.getDt());
-        spaceship.changeAltitudeFromMoon(-1 * spaceship.getDt() * spaceship.getVerticalSpeed());
-
+        spaceship.setAccelerate(acc);
+        landing_time++;
     }
 
+    private void fullPowerLanding() {
+        double acc = Formulas.calcAccelerate(spaceship.getActualWeight(), true, 8);
+        updateSpeed(acc);
+        updatePlace();
+        burnFuel(true, 8);
+
+        spaceship.setAccelerate(acc);
+        landing_time++;
+    }
+
+    private void updatePlace() {
+        spaceship.changeDistanceFromDestination(-spaceship.getHorizontalSpeed());
+        spaceship.changeAltitudeFromMoon(-spaceship.getVerticalSpeed());
+    }
+
+    private void updateSpeed(double counter_acc) {
+//        System.out.println(counter_acc);
+        double vertical_acc = counter_acc * Math.sin(Math.toRadians(spaceship.getAngle()));
+        double horizontal_acc = counter_acc * Math.cos(Math.toRadians(spaceship.getAngle()));
+        double ang = Formulas.calcAngleOfLanding(spaceship.getHorizontalSpeed(), spaceship.getVerticalSpeed());
+
+        updateVerticalSpeed(vertical_acc, ang);
+        updateHorizontalSpeed(horizontal_acc, ang);
+
+        updateAngle(ang);
+    }
+
+    private void updateVerticalSpeed(double counter_acc, double ang) {
+        double actual_speed = Formulas.calcVerticalSpeed(spaceship.getVerticalSpeed(), ang, 1);
+        actual_speed -= counter_acc;
+//        setVerticalSpeed(actual_speed);
+    }
+
+    private void updateHorizontalSpeed(double counter_acc, double ang) {
+        double actual_speed = Formulas.calcHorizontalSpeed(spaceship.getHorizontalSpeed(), ang);
+        actual_speed -= counter_acc;
+        spaceship.setHorizontalSpeed(actual_speed);
+    }
+
+    private void updateAngle(double landing_ang) {
+        double angle_similarity = landing_ang / spaceship.getAngle();
+
+        if (angle_similarity < 0.1) {
+            spaceship.changeAngle(-3);
+        } else if (angle_similarity < 0.2) {
+            spaceship.changeAngle(-2);
+        } else if (angle_similarity < 1) {
+            spaceship.changeAngle(-1);
+        } else {
+            spaceship.changeAngle(1);
+        }
+    }
+
+    private void burnFuel(boolean main_engine, double seconds_engines) {
+        if (main_engine) {
+            spaceship.changeFuelAmount(-Spaceship.MAIN_ENGINE_CONSUMPTION);
+        }
+        spaceship.changeFuelAmount(-Spaceship.SECOND_ENGINE_CONSUMPTION * seconds_engines);
+        spaceship.setActualWeight(Spaceship.WEIGHT_CRAFT + spaceship.getFuelAmount());
+    }
 }

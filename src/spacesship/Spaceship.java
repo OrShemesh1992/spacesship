@@ -13,6 +13,11 @@ public class Spaceship {
     public static final double SECOND_ENGINE_CONSUMPTION = 0.009; //liter per sec 0.6 liter per m'
     public static final double ALL_ENGINE_START = MAIN_ENGINE_CONSUMPTION + 8 * SECOND_ENGINE_CONSUMPTION;
 
+
+    private double start_distance_from_destination;
+    private double start_altitude_from_moon;
+
+
     private double vertical_speed;
     private double horizontal_speed;
     private double distance_from_destination;
@@ -37,6 +42,9 @@ public class Spaceship {
         fuel_amount = fl;
         actual_weight = WEIGHT_CRAFT + fuel_amount;
         createController();
+
+        start_distance_from_destination = distance_from_destination;
+        start_altitude_from_moon = altitude_from_moon;
     }
 
 //    private void createController() {
@@ -70,98 +78,6 @@ public class Spaceship {
     public PID getPidController() {
         return pid_controller;
     }
-
-    ////////////////////////////next scope to spaceship landing class/////////////////////////////////
-
-
-    public double fullPowerLanding() {
-        double acc = Formulas.calcAccelerate(actual_weight, true, 8);
-        updateSpeed(acc);
-        updatePlace();
-        burnFuel(true, 8);
-
-        return acc;
-    }
-
-    public double smartLanding() {
-        boolean main_engine = false;
-        double seconds_engines = 0;
-
-        if (NN >= 0.85) {
-            return fullPowerLanding();
-//            return ;
-        } else if (0.7 <= NN && NN < 0.85) {
-            main_engine = true;
-            seconds_engines = 4;
-        } else if (0.3 <= NN && NN < 0.7) {
-            main_engine = true;
-        } else if (0.15 <= NN && NN < 0.3) {
-            seconds_engines = 8;
-        } else if (NN < 0.15) {
-            seconds_engines = 4;
-        }
-
-        double acc = Formulas.calcAccelerate(actual_weight, main_engine, seconds_engines);
-
-        updateSpeed(acc);
-        updatePlace();
-
-        burnFuel(main_engine, seconds_engines);
-
-        return acc;
-    }
-
-    private void updatePlace() {
-        distance_from_destination -= horizontal_speed;
-        altitude_from_moon -= vertical_speed;
-    }
-
-    private void updateSpeed(double counter_acc) {
-        double vertical_acc = counter_acc * Math.sin(Math.toRadians(angle));
-        double horizontal_acc = counter_acc * Math.cos(Math.toRadians(angle));
-        double ang = Formulas.calcAngleOfLanding(horizontal_speed, vertical_speed);
-
-        updateVerticalSpeed(vertical_acc, ang);
-        updateHorizontalSpeed(horizontal_acc, ang);
-        updateAngle(ang);
-    }
-
-    private void updateVerticalSpeed(double counter_acc, double ang) {
-        double actual_speed = Formulas.calcVerticalSpeed(vertical_speed, ang, 1);
-        actual_speed -= counter_acc;
-//        changeVerticalSpeed(-counter_acc);
-//        setVerticalSpeed(actual_speed);
-    }
-
-    private void updateHorizontalSpeed(double counter_acc, double ang) {
-        double actual_speed = Formulas.calcHorizontalSpeed(horizontal_speed, ang);
-        actual_speed -= counter_acc;
-//        changeHorizontalSpeed(-counter_acc);
-        setHorizontalSpeed(actual_speed);
-    }
-
-    private void updateAngle(double landing_ang) {
-        double angle_similarity = landing_ang / this.angle;
-        if (angle_similarity < 0.1) {
-            this.angle -= 3;
-        } else if (angle_similarity < 0.2) {
-            this.angle -= 2;
-        } else if (angle_similarity < 1) {
-            this.angle--;
-        } else {
-            this.angle++;
-        }
-    }
-
-    private void burnFuel(boolean main_engine, double seconds_engines) {
-        if (main_engine) {
-            fuel_amount -= MAIN_ENGINE_CONSUMPTION;
-        }
-        fuel_amount -= (SECOND_ENGINE_CONSUMPTION * seconds_engines);
-        setActualWeight(WEIGHT_CRAFT + fuel_amount);
-    }
-
-    /////////////////////////////////////////////////////////////////////
 
     public Point getPosition() {
         return new Point(distance_from_destination, altitude_from_moon);
@@ -279,5 +195,13 @@ public class Spaceship {
 
     public void changeNN(double nn) {
         NN += nn;
+    }
+
+    public double getStartDistanceFromDestination() {
+        return start_distance_from_destination;
+    }
+
+    public double getStartAltitudeFromMoon() {
+        return start_altitude_from_moon;
     }
 }

@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="7fd46947-e1db-478b-b5a2-25b55b2c3be9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/spacesship/Bereshit_101.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spacesship/Bereshit_101.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/spacesship/Bereshit_101.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/spacesship/Formulas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spacesship/Formulas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/spacesship/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spacesship/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/spacesship/Spaceship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spacesship/Spaceship.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/spacesship/SpaceshipLanding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/spacesship/SpaceshipLanding.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,53 +22,12 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/spacesship/Spaceship.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="279" column="24" selection-start-line="279" selection-start-column="24" selection-end-line="279" selection-end-column="24" />
-              <folding>
-                <element signature="e#5773#5774#0" expanded="true" />
-                <element signature="e#6149#6150#0" expanded="true" />
-                <element signature="e#6237#6238#0" expanded="true" />
-                <element signature="e#6318#6319#0" expanded="true" />
-                <element signature="e#6404#6405#0" expanded="true" />
-                <element signature="e#6486#6487#0" expanded="true" />
-                <element signature="e#6578#6579#0" expanded="true" />
-                <element signature="e#6676#6677#0" expanded="true" />
-                <element signature="e#6785#6786#0" expanded="true" />
-                <element signature="e#6845#6846#0" expanded="true" />
-                <element signature="e#6931#6932#0" expanded="true" />
-                <element signature="e#6998#6999#0" expanded="true" />
-                <element signature="e#7082#7083#0" expanded="true" />
-                <element signature="e#7177#7178#0" expanded="true" />
-                <element signature="e#7231#7232#0" expanded="true" />
-                <element signature="e#7301#7302#0" expanded="true" />
-                <element signature="e#7378#7379#0" expanded="true" />
-                <element signature="e#7459#7460#0" expanded="true" />
-                <element signature="e#7530#7531#0" expanded="true" />
-                <element signature="e#7606#7607#0" expanded="true" />
-                <element signature="e#7688#7689#0" expanded="true" />
-                <element signature="e#7763#7764#0" expanded="true" />
-                <element signature="e#7841#7842#0" expanded="true" />
-                <element signature="e#7927#7928#0" expanded="true" />
-                <element signature="e#7981#7982#0" expanded="true" />
-                <element signature="e#8040#8041#0" expanded="true" />
-                <element signature="e#8103#8104#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/spacesship/Formulas.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="924">
-              <caret line="42" column="79" selection-start-line="42" selection-start-column="79" selection-end-line="42" selection-end-column="79" />
+            <state relative-caret-position="-771">
+              <caret line="20" column="51" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
               <folding>
-                <element signature="e#658#659#0" expanded="true" />
-                <element signature="e#719#720#0" expanded="true" />
-                <element signature="e#1091#1092#0" expanded="true" />
-                <element signature="e#1158#1159#0" expanded="true" />
+                <element signature="e#1637#1638#0" expanded="true" />
                 <element signature="e#1674#1675#0" expanded="true" />
               </folding>
             </state>
@@ -74,10 +35,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/spacesship/Bereshit_101.java">
+        <entry file="file://$PROJECT_DIR$/src/spacesship/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="76" column="34" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
+            <state relative-caret-position="189">
+              <caret line="28" column="118" selection-start-line="28" selection-start-column="118" selection-end-line="28" selection-end-column="118" />
+              <folding>
+                <element signature="e#207#238#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/spacesship/PID.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1342">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/spacesship/SpaceshipLanding.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="139">
+              <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+              <folding>
+                <element signature="e#21#52#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -113,6 +98,9 @@
       <find>setH</find>
       <find>deg</find>
       <find>changeNN</find>
+      <find>gets</find>
+      <find>tim</find>
+      <find>dt</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -126,15 +114,15 @@
       <list>
         <option value="$PROJECT_DIR$/src/spacesship/SituationCreator.java" />
         <option value="$PROJECT_DIR$/src/spacesship/SpaceshipActions.java" />
-        <option value="$PROJECT_DIR$/src/spacesship/SpaceshipLanding.java" />
         <option value="$PROJECT_DIR$/src/spacesship/Moon.java" />
-        <option value="$PROJECT_DIR$/src/spacesship/Main.java" />
         <option value="$PROJECT_DIR$/src/spacesship/Utils.java" />
         <option value="$PROJECT_DIR$/src/spacesship/Point.java" />
         <option value="$PROJECT_DIR$/src/spacesship/PID.java" />
-        <option value="$PROJECT_DIR$/src/spacesship/Formulas.java" />
-        <option value="$PROJECT_DIR$/src/spacesship/Spaceship.java" />
         <option value="$PROJECT_DIR$/src/spacesship/Bereshit_101.java" />
+        <option value="$PROJECT_DIR$/src/spacesship/Spaceship.java" />
+        <option value="$PROJECT_DIR$/src/spacesship/Formulas.java" />
+        <option value="$PROJECT_DIR$/src/spacesship/SpaceshipLanding.java" />
+        <option value="$PROJECT_DIR$/src/spacesship/Main.java" />
       </list>
     </option>
   </component>
@@ -179,8 +167,8 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1588442771258" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MiniPID-Java" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1589645592184" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Pid/MiniPID-Java" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -197,8 +185,8 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="Bereshit_101" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="spacesship.Bereshit_101" />
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="spacesship.Main" />
       <module name="spacesship" />
       <extension name="coverage">
         <pattern>
@@ -212,7 +200,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Bereshit_101" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -229,11 +217,12 @@
       <workItem from="1588421155262" duration="1439000" />
       <workItem from="1588434373843" duration="8405000" />
       <workItem from="1588490896759" duration="26690000" />
+      <workItem from="1589631235851" duration="13005000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70115000" />
+    <option name="totallyTimeSpent" value="83938000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -337,13 +326,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/spacesship/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="23" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/spacesship/SituationCreator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
@@ -362,77 +344,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/spacesship/PID.java">
+    <entry file="file://$PROJECT_DIR$/src/spacesship/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-84">
-          <caret line="51" selection-start-line="51" selection-end-line="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/spacesship/SpaceshipLanding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1277">
-          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="31" />
+        <state relative-caret-position="-141">
+          <caret line="8" selection-start-line="8" selection-end-line="29" selection-end-column="9" />
           <folding>
-            <element signature="e#21#52#0" expanded="true" />
+            <element signature="e#22#53#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/spacesship/Formulas.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="924">
-          <caret line="42" column="79" selection-start-line="42" selection-start-column="79" selection-end-line="42" selection-end-column="79" />
+        <state relative-caret-position="-771">
+          <caret line="20" column="51" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
           <folding>
-            <element signature="e#658#659#0" expanded="true" />
-            <element signature="e#719#720#0" expanded="true" />
-            <element signature="e#1091#1092#0" expanded="true" />
-            <element signature="e#1158#1159#0" expanded="true" />
+            <element signature="e#1637#1638#0" expanded="true" />
             <element signature="e#1674#1675#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/spacesship/PID.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1342">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/spacesship/Spaceship.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="279" column="24" selection-start-line="279" selection-start-column="24" selection-end-line="279" selection-end-column="24" />
+        <state relative-caret-position="393">
+          <caret line="65" column="32" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
           <folding>
-            <element signature="e#5773#5774#0" expanded="true" />
-            <element signature="e#6149#6150#0" expanded="true" />
-            <element signature="e#6237#6238#0" expanded="true" />
-            <element signature="e#6318#6319#0" expanded="true" />
-            <element signature="e#6404#6405#0" expanded="true" />
-            <element signature="e#6486#6487#0" expanded="true" />
-            <element signature="e#6578#6579#0" expanded="true" />
-            <element signature="e#6676#6677#0" expanded="true" />
-            <element signature="e#6785#6786#0" expanded="true" />
-            <element signature="e#6845#6846#0" expanded="true" />
-            <element signature="e#6931#6932#0" expanded="true" />
-            <element signature="e#6998#6999#0" expanded="true" />
-            <element signature="e#7082#7083#0" expanded="true" />
-            <element signature="e#7177#7178#0" expanded="true" />
-            <element signature="e#7231#7232#0" expanded="true" />
-            <element signature="e#7301#7302#0" expanded="true" />
-            <element signature="e#7378#7379#0" expanded="true" />
-            <element signature="e#7459#7460#0" expanded="true" />
-            <element signature="e#7530#7531#0" expanded="true" />
-            <element signature="e#7606#7607#0" expanded="true" />
-            <element signature="e#7688#7689#0" expanded="true" />
-            <element signature="e#7763#7764#0" expanded="true" />
-            <element signature="e#7841#7842#0" expanded="true" />
-            <element signature="e#7927#7928#0" expanded="true" />
-            <element signature="e#7981#7982#0" expanded="true" />
-            <element signature="e#8040#8041#0" expanded="true" />
-            <element signature="e#8103#8104#0" expanded="true" />
+            <element signature="e#2888#2889#0" expanded="true" />
+            <element signature="e#2925#2926#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/spacesship/Bereshit_101.java">
+    <entry file="file://$PROJECT_DIR$/src/spacesship/SpaceshipLanding.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="76" column="34" selection-start-line="76" selection-start-column="34" selection-end-line="76" selection-end-column="34" />
+        <state relative-caret-position="139">
+          <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+          <folding>
+            <element signature="e#21#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/spacesship/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="28" column="118" selection-start-line="28" selection-start-column="118" selection-end-line="28" selection-end-column="118" />
+          <folding>
+            <element signature="e#207#238#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

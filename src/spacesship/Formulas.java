@@ -72,7 +72,7 @@ public class Formulas {
         return new_y;
     }
 
-    public static double getDisplacement(double dt, double vel, double acc) {
-        return vel * dt + acc * dt * dt / 2;
-    }
+//    public static double getDisplacement(double dt, double vel, double acc) {
+//        return vel * dt + acc * dt * dt / 2;
+//    }
 }
