@@ -78,7 +78,7 @@ public class Spaceship {
                 Utils.round(accelerate),
                 Utils.round(NN)
         );
-        CSV.write( Utils.round(dt)+","+Utils.round(angle)+","+ Utils.round(NN));
+//        CSV.write( Utils.round(dt)+","+Utils.round(angle)+","+ Utils.round(NN));
     }
 
     public PID getPidController() {

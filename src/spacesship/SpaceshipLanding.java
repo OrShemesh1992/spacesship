@@ -64,12 +64,14 @@ public class SpaceshipLanding implements SpaceshipActions {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		//-------------need to fix-------------//
+		// צריך לגרום לזווית להשתנות בהתאם לתאוצה הזוויתית, לא שיניתי את התאוצה הזוויתית בנתיים. התאוצה הזוויתית משתנה בהתאם למהירות הסיביב
 		// update angle
 		this.spaceship.setAngleSpeed(spaceship.getAngleSpeed() + this.landing_time*spaceship.getAngleAccelerate());
 		double angle = this.spaceship.getAngle();
 		double angle_speed = this.spaceship.getAngleSpeed();
-		double angle_acc = this.spaceship.getAngleAccelerate();
-		double ang_disp = Formulas.calcDisplacement(this.landing_time, angle_speed, angle_acc);
+		double angle_acc = this.spaceship.getAngleAccelerate(); //תאוצה זוויתית
+		angle_acc = -1.943;                                     //מספר שרירותי (צריך נוסחא) - לשנות
+		double ang_disp = Formulas.calcDisplacement(1, angle_speed, angle_acc);
 		double new_angle = (angle + ang_disp) % 360;
 		this.spaceship.setAngle(new_angle);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +79,7 @@ public class SpaceshipLanding implements SpaceshipActions {
 		// update alt
 		double vertical_speed = this.spaceship.getVerticalSpeed();
 		double y_accelerate = this.spaceship.getAccelerateY();
-		this.spaceship.changeAltitudeFromMoon(Formulas.calcDisplacement(this.landing_time, vertical_speed, y_accelerate));
+		this.spaceship.changeAltitudeFromMoon(-Formulas.calcDisplacement(1, vertical_speed, y_accelerate));
 		
 		// update speed
 		this.spaceship.changeVerticalSpeed(this.spaceship.getAccelerateY());
