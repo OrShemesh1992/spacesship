@@ -48,7 +48,6 @@ public class PID {
      * @return The PID output.
      */
     public Double update(double currTime, double currValue) {
-
         if (lastTime == 0) {
 
             lastTime = currTime;
@@ -73,6 +72,7 @@ public class PID {
         lastError = error;
 
         double ans = (pGain * error) + (iGain * integral) + (dGain * deriv);
+//        System.out.println("ans = "+ans);
         return ans;
     }
 

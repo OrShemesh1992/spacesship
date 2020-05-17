@@ -18,12 +18,16 @@ public class Spaceship {
     private double start_altitude_from_moon;
 
 
-    private double vertical_speed;
-    private double horizontal_speed;
     private double distance_from_destination;
-    private double angle;
     private double altitude_from_moon;
     private double dt;
+    private double vertical_speed;
+    private double accelerate_y;
+    private double horizontal_speed;
+    private double accelerate_x;
+    private double angle;
+    private double angle_speed;
+    private double angle_accelerate; //[d/s ^2]
     private double accelerate;
     private double fuel_amount;
     private double actual_weight;
@@ -57,7 +61,7 @@ public class Spaceship {
 //    }
 
     private void createController() {
-        pid_controller = new PID(0, 0.1, 0.03, 0.1);
+        pid_controller = new PID(0, 1, 0.0, 0.0);
     }
 
     public void printInfo() {
@@ -87,7 +91,7 @@ public class Spaceship {
         return Formulas.calcNextPoint(
                 distance_from_destination,
                 altitude_from_moon,
-                Moon.GRAVITY_ACCELERATION,
+                Moon.GRAVITY_ACCELERATION * NN,
                 horizontal_speed,
                 vertical_speed,
                 t);
@@ -100,6 +104,14 @@ public class Spaceship {
     public void changeVerticalSpeed(double fix) {
         vertical_speed += fix;
     }
+    
+    public double getAccelerateY() {
+    	return accelerate_y;
+    }
+    
+    public void setAccelerateY(double acc_y) {
+    	accelerate_y = acc_y;
+    }
 
     public double getHorizontalSpeed() {
         return horizontal_speed;
@@ -107,6 +119,14 @@ public class Spaceship {
 
     public void setHorizontalSpeed(double hs) {
         horizontal_speed = hs;
+    }
+    
+    public double getAccelerateX() {
+    	return accelerate_x;
+    }
+    
+    public void setAccelerateX(double acc_x) {
+    	accelerate_x = acc_x;
     }
 
     public void setVerticalSpeed(double vs) {
@@ -135,6 +155,22 @@ public class Spaceship {
 
     public void setAngle(double ang) {
         angle = ang;
+    }
+    
+    public double getAngleSpeed() {
+    	return angle_speed;
+    }
+    
+    public void setAngleSpeed(double as) {
+    	angle_speed = as;
+    }
+    
+    public double getAngleAccelerate() {
+    	return angle_accelerate;
+    }
+    
+    public void setAngleAccelerate(double aa) {
+    	angle_accelerate = aa;
     }
 
     public double getAltitudeFromMoon() {

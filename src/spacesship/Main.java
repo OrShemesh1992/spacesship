@@ -23,12 +23,12 @@ public class Main {
         && time < 1000) {
 
 
-            if (time++ % 10 == 0) {
+//            if (time++ % 10 == 0) {
 //                System.out.println("_________________________________________________________");
 //                System.out.println(bereshit.getPosition() + " - " + bereshit.getNextPosition(10));
 //                System.out.println(bereshit.getPidController().update(time, bereshit.getDistanceFromDestination()));
                 bereshit.printInfo();
-            }
+//            }
 
             spaceshipLanding.landing();
         }
