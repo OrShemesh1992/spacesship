@@ -49,6 +49,7 @@ public class Spaceship {
 
         start_distance_from_destination = distance_from_destination;
         start_altitude_from_moon = altitude_from_moon;
+        CSV.write( "Time,Angle,Power");
     }
 
 //    private void createController() {
@@ -77,6 +78,7 @@ public class Spaceship {
                 Utils.round(accelerate),
                 Utils.round(NN)
         );
+        CSV.write( Utils.round(dt)+","+Utils.round(angle)+","+ Utils.round(NN));
     }
 
     public PID getPidController() {
