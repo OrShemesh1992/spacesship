@@ -1,13 +1,11 @@
 package spacesship;
 
 
-import java.util.concurrent.TimeUnit;
 
 
 /**
  * A simple PID control loop.
  *
- * @author bkate
  */
 public class PID {
 
@@ -56,8 +54,7 @@ public class PID {
             return null;
         }
 
-//        double dt = (double)(currTime - lastTime) / TimeUnit.SECONDS.toNanos(1);
-        //in this point - last point
+
         double dt = (double)(currTime - lastTime);
 
         if (dt == 0) {
@@ -72,7 +69,6 @@ public class PID {
         lastError = error;
 
         double ans = (pGain * error) + (iGain * integral) + (dGain * deriv);
-//        System.out.println("ans = "+ans);
         return ans;
     }
 
