@@ -16,10 +16,9 @@ public class SpaceshipLanding implements SpaceshipActions {
     private ArrayList<Point> destination_points;
     private Point current_destination_point;
     private int index_des_point;
-    PID pid;
+
 	public SpaceshipLanding(Spaceship spaceship) {
 		this.spaceship = spaceship;
-		pid=new PID(13000,0,0,0);
 	}
 /**
  ***************** landing function************************
@@ -94,7 +93,7 @@ public class SpaceshipLanding implements SpaceshipActions {
 
 	// ******************* Activate engines *************** 
 	private void Engines() {
-		//pid()
+		
 		if (spaceship.getHorizontal_speed() > 0 )
 			PowerHorizontally();
 		if ( spaceship.getAltitude()> 20000 ) {
@@ -157,8 +156,8 @@ public class SpaceshipLanding implements SpaceshipActions {
 	// ************************** update pid **********************
 	 private void defineLandingPath() {
 	    	this.destination_points = new ArrayList<Point>();
-	    	double total_alt = this.spaceship.getStartAltitudeFromMoon();
-	    	double total_dis = this.spaceship.getStartDistanceFromDestination();
+	    	double total_alt = spaceship.getStartAltitudeFromMoon();
+	    	double total_dis = spaceship.getStartDistanceFromDestination();
 	    	double dis_from_ver_landing = 3000;          //arbitrary
 	    	double alt_from_ver_landing = 2000;          //arbitrary
 	    	double dis = total_dis - dis_from_ver_landing;
@@ -175,9 +174,8 @@ public class SpaceshipLanding implements SpaceshipActions {
 	    		y -= alt_between_points;
 	    		this.destination_points.add(new Point(x,y));
 	    	}
-	    	
 	    	this.current_destination_point = this.destination_points.get(1);
 	    	index_des_point = 1;
-	    	this.spaceship.getPidController().setSetpoint(current_destination_point.getY());
+	    	spaceship.getPidController().setSetpoint(current_destination_point.getY());
 	    }
 }

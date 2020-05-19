@@ -15,6 +15,9 @@ public class Spaceship {
 	public static final double SECOND_ENGINE_CONSUMPTION= 0.009; // liter per sec 0.6 liter per m'
 	public static final int dt = 1;    // Delta Time is 1 sec
    //***********Variables**************
+	private PID pid_controller;
+    private double start_distance_from_destination;
+    private double start_altitude_from_moon;
 	private int    time;
 	private double altitude ;
 	private double fuel_amount;
@@ -26,7 +29,8 @@ public class Spaceship {
 	private double angSpeed  ;
 	private double angAcc   ;
 	
-	public Spaceship(int _time, double alt, double fuel, double vs, double hs, double accX, double accY,double ang,double _angSpeed,double _angACC) {
+	
+	public Spaceship(int dist, int _time, double alt, double fuel, double vs, double hs, double accX, double accY,double ang,double _angSpeed,double _angACC) {
 		this.time=_time;
 		this.altitude=alt;
 		this.fuel_amount=fuel;
@@ -38,6 +42,9 @@ public class Spaceship {
 		this.angSpeed=_angSpeed;
 		this.angAcc=_angACC;
 		printtitle();
+		pid_controller=new PID(13000,1,0,0);
+		start_altitude_from_moon=alt;
+		start_distance_from_destination=dist;
 	}
 	private void printtitle(){
 		System.out.println( "Time\tAlt\t\tV-Speed\t\tV-Acc\t\tH-Speed\t\tH-Acc\t\tFuel\tWeight\tAngle\tA-Speed\tA-Acc" );
@@ -143,5 +150,16 @@ public class Spaceship {
 	public void setAngAcc(double angAcc) {
 		this.angAcc = angAcc;
 	}
+	
+    public PID getPidController() {
+        return pid_controller;
+    }
+    public double getStartDistanceFromDestination() {
+        return start_distance_from_destination;
+    }
+
+    public double getStartAltitudeFromMoon() {
+        return start_altitude_from_moon;
+    }
 
 }
