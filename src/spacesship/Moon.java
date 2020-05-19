@@ -6,10 +6,8 @@ public class Moon {
     public static final double GRAVITY_ACCELERATION = 1.622;// m/s^2
     public static final double EQUIVALENT_SPEED = 1700;// m/s
 	public static final double MASS= 7.3477 * Math.pow( 10, 22 ); // meters
-	
 	public static double getGravityForce( double mass, double height ) {
 		return -Formulas.getGravityForce( mass, MASS, RADIUS + height );
 	}
-
 }
 

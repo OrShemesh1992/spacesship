@@ -37,9 +37,9 @@ public class Spaceship {
 		this.angle=ang;
 		this.angSpeed=_angSpeed;
 		this.angAcc=_angACC;
-		printHead();
+		printtitle();
 	}
-	private void printHead(){
+	private void printtitle(){
 		System.out.println( "Time\tAlt\t\tV-Speed\t\tV-Acc\t\tH-Speed\t\tH-Acc\t\tFuel\tWeight\tAngle\tA-Speed\tA-Acc" );
 		CSV.write( "Time,Alt,V-Speed,V-Acc,H-Speed,H-Acc,Fuel,Weight,Angle,A-Speed,A-Acc");
 	}

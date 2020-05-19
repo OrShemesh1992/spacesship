@@ -1,4 +1,8 @@
 package spacesship;
+
+
+import java.util.ArrayList;
+
 /**
  * 
  * @author Or Shemesh
@@ -7,15 +11,20 @@ package spacesship;
 public class SpaceshipLanding implements SpaceshipActions {
 
 	Spaceship spaceship;
-
+	//pid varibales
+    private int num_of_destination_points = 9;
+    private ArrayList<Point> destination_points;
+    private Point current_destination_point;
+    private int index_des_point;
+    PID pid;
 	public SpaceshipLanding(Spaceship spaceship) {
 		this.spaceship = spaceship;
+		pid=new PID(13000,0,0,0);
 	}
 /**
  ***************** landing function************************
  */
 	public void landing(){
-
 		spaceship.setTime(spaceship.getTime()+1);
 		Acceleration();
 		Engines();
@@ -85,7 +94,7 @@ public class SpaceshipLanding implements SpaceshipActions {
 
 	// ******************* Activate engines *************** 
 	private void Engines() {
-
+		//pid()
 		if (spaceship.getHorizontal_speed() > 0 )
 			PowerHorizontally();
 		if ( spaceship.getAltitude()> 20000 ) {
@@ -145,6 +154,30 @@ public class SpaceshipLanding implements SpaceshipActions {
 		double force  = spaceship.MAIN_ENGINE_POWER + spaceship.SECOND_ENGINE_POWER * 8;
 		return Formulas.getAccNewton2( force, weight );
 	}
+	// ************************** update pid **********************
+	 private void defineLandingPath() {
+	    	this.destination_points = new ArrayList<Point>();
+	    	double total_alt = this.spaceship.getStartAltitudeFromMoon();
+	    	double total_dis = this.spaceship.getStartDistanceFromDestination();
+	    	double dis_from_ver_landing = 3000;          //arbitrary
+	    	double alt_from_ver_landing = 2000;          //arbitrary
+	    	double dis = total_dis - dis_from_ver_landing;
+	    	double alt = total_alt - alt_from_ver_landing;
+	    	int num_points = this.num_of_destination_points;
+	    	double dis_between_points = dis/num_points;
+	    	double alt_between_points = alt/num_points;
+	    	
+	    	this.destination_points.add(new Point(0, total_alt));
+	    	
+	    	double x=0, y=total_alt;
+	    	for(int i=0 ; i<num_points ; i++) {
+	    		x += dis_between_points;
+	    		y -= alt_between_points;
+	    		this.destination_points.add(new Point(x,y));
+	    	}
+	    	
+	    	this.current_destination_point = this.destination_points.get(1);
+	    	index_des_point = 1;
+	    	this.spaceship.getPidController().setSetpoint(current_destination_point.getY());
+	    }
 }
-
-
