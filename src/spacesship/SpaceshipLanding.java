@@ -3,11 +3,6 @@ package spacesship;
 
 import java.util.ArrayList;
 
-/**
- * 
- * @author Or Shemesh
- *
- */
 public class SpaceshipLanding implements SpaceshipActions {
 
 	Spaceship spaceship;
@@ -16,143 +11,178 @@ public class SpaceshipLanding implements SpaceshipActions {
     private ArrayList<Point> destination_points;
     private Point current_destination_point;
     private int index_des_point;
+    
+    private double NN;
 
 	public SpaceshipLanding(Spaceship spaceship) {
 		this.spaceship = spaceship;
+		this.NN = 0.5;
 	}
 /**
  ***************** landing function************************
  */
 	public void landing(){
 		spaceship.setTime(spaceship.getTime()+1);
-		Acceleration();
+		
+		// ***************** Acceleration set without engine************
+		double force = Formulas.calcGravitationalAccelerationByNewton(spaceship.WeightSpaces(), Moon.RADIUS+spaceship.getAltitude());
+		// no gravitational acceleration 
+		spaceship.setAccelerateX(0);
+		// calculate gravitational acceleration
+		spaceship.setAccelerateY(Formulas.calcAccelerationByNewton(force, spaceship.WeightSpaces()));
 		Engines();
+		System.out.println("NN = "+NN);
 		Rotation();
 		updateAltitude();
+		updateDistance();
 		updateFuel();
 		updateSpeed();
 	}
 
-	//**********Rotation spaceship***************
+	//**********Rotate the spaceship around its axis***************
 	private void Rotation() {
 
 		if ( spaceship.getAngle() > 0 && spaceship.getAngSpeed() > -0.3 )
-			spaceship.setAngAcc( -getAngularPower());
+			spaceship.setAngAcc( -getAngularAcc());
 		else if ( spaceship.getAngle() < 0 && spaceship.getAngSpeed() < 0.3 )
-			spaceship.setAngAcc(getAngularPower());
+			spaceship.setAngAcc(getAngularAcc());
 		else
 			spaceship.setAngAcc(0);
-		updateAngularSpeed();
-		updateAngle();
+		spaceship.setAngSpeed(spaceship.getAngAcc()+spaceship.getAngSpeed());
+		spaceship.setAngle(spaceship.getAngle()+Formulas.calcDisplacement( 1, spaceship.getAngSpeed(), spaceship.getAngAcc()));
+		if(spaceship.getAngle() < -180) {
+			spaceship.setAngle(spaceship.getAngle()%360);
+		}
+		else if(spaceship.getAngle() > 180) {
+			spaceship.setAngle(spaceship.getAngle()%360);
+		}
 	}
 
-	// **********Update angular speed*************
-	private void updateAngularSpeed() {
-		spaceship.setAngSpeed(Formulas.getVelocity( spaceship.dt, spaceship.getAngAcc())+spaceship.getAngSpeed());
-	}
-
-	// ************Update angle*******************
-	private void updateAngle() {
-		spaceship.setAngle(spaceship.getAngle()+Formulas.getDisplacement( spaceship.dt, spaceship.getAngSpeed(), spaceship.getAngAcc() ));
-		normalizeAngle();
-	}
-
-	// ************Keep the range***************** 
-	private void normalizeAngle() {
-		while ( spaceship.getAngle() < -180 )
-			spaceship.setAngle(spaceship.getAngle()+360);
-		while ( spaceship.getAngle() > 180 )
-			spaceship.setAngle(spaceship.getAngle()-360);
-	}
     //************get angular power****************
-	public double getAngularPower() {
-		double torque = Formulas.getTorque( spaceship.SELF_RADIUS, getTotalEnginePower() );
-		double moment = Formulas.getDiscMoment( spaceship.SELF_RADIUS, getTotalWeight() );
-		return Formulas.getAccNewton2( torque, moment );
-	}
-
-	// ***************** Acceleration without engine************
-	private void Acceleration() {
-		// no gravitational acceleration 
-		spaceship.setAccelerateX(0);
-		// calculate gravitational acceleration
-		double weight  = getTotalWeight();
-		double gravity = Moon.getGravityForce(weight, spaceship.getAltitude() );
-		spaceship.setAccelerateY(Formulas.getAccNewton2( gravity, weight ));
-	}
-	
-	// ****************Calculate horizontal **************
-	private void PowerHorizontally() {
-		spaceship.setAccelerateX(spaceship.getAccelerateX()-getTotalEnginePower());
-	}
-
-	// **************** Calculate vertical ***************
-	private void PowerVertically() {
-		spaceship.setAccelerateY(spaceship.getAccelerateY()+getTotalEnginePower());
+	// calc the angular acceleration
+	public double getAngularAcc() {
+		double force = getTotalEnginePower(1);
+		double moment = Formulas.calcDiscMoment(1, spaceship.WeightSpaces());
+		return Formulas.calcAccelerationByNewton(force, moment );
 	}
 
 	// ******************* Activate engines *************** 
 	private void Engines() {
+
+		Double error = spaceship.getPidController().update(spaceship.getTime(), spaceship.getAltitude());
+		if(error!=null) {
+		}
 		
-		if (spaceship.getHorizontal_speed() > 0 )
-			PowerHorizontally();
-		if ( spaceship.getAltitude()> 20000 ) {
-			if ( spaceship.getVertical_speed()< -25 )
-				PowerVertically();
-
-		} else if ( this.spaceship.getAltitude() > 10000 ) {
-
-			if ( spaceship.getVertical_speed() < -100 )
-				PowerVertically();
+		// Horizontal speed not effect the Engines and fuel - it constant
+		if (spaceship.getHorizontal_speed() > 0) {
+			PowerHorizontally(1);
+		}
+		
+		// Vertical speed effect the Engines and fuel - the 
+		if ( this.spaceship.getAltitude() > 7000 ) {
+			if ( spaceship.getVertical_speed()< -35) {
+				this.setNN(NN + 0.003);
+				PowerVertically(NN); //0 - 1
+			}
+			else if ( spaceship.getVertical_speed()> -20) {
+				this.setNN(NN - 0.003);
+				PowerVertically(NN); //0 - 1
+			}
+		} else if ( spaceship.getAltitude()> 5000 ) {
+			if ( spaceship.getVertical_speed() < -30 ) {
+				this.setNN(NN + 0.003);
+				PowerVertically(NN); //0 - 1
+			}
+			else if ( spaceship.getVertical_speed()> -20) {
+				this.setNN(NN - 0.003);
+				PowerVertically(NN); //0 - 1
+			}
+		} else if ( spaceship.getAltitude()> 3500 ) {
+			if ( spaceship.getVertical_speed() < -25 ) {
+				this.setNN(NN + 0.003);
+				PowerVertically(NN); //0 - 1
+			}
+			else if (spaceship.getVertical_speed()> -20) {
+				this.setNN(NN - 0.003);
+				PowerVertically(NN); //0 - 1
+			}
 
 		} else if ( spaceship.getAltitude()> 1000 ) {
-
-			if ( spaceship.getVertical_speed() < -50 )
-				PowerVertically();
+			if ( spaceship.getVertical_speed() < -15 ) {
+				this.setNN(NN + 0.003); 
+				PowerVertically(NN); //0 - 1
+			}
+			else if (spaceship.getVertical_speed()> -10) {
+				this.setNN(NN - 0.003); 
+				PowerVertically(NN); //0 - 1
+			}
 
 		} else if (spaceship.getAltitude()> 100 ) {
-
-			if ( spaceship.getVertical_speed() < -10 )
-				PowerVertically();
+			if ( spaceship.getVertical_speed() < -10 ) {
+				this.setNN(NN + 0.003); 
+				PowerVertically(NN); //0 - 1
+			}
+			else if (spaceship.getVertical_speed()> -5) {
+				this.setNN(NN - 0.003); 
+				PowerVertically(NN); //0 - 1
+			}
 
 		} else if ( spaceship.getAltitude() > 5 )  {
-
-			if ( spaceship.getVertical_speed() < -5 )
-				PowerVertically();
+			if ( spaceship.getVertical_speed() < -5 ) {
+				this.setNN(NN + 0.03); //full breaking power
+				PowerVertically(NN); //0 - 1
+			}
 		}
+		this.spaceship.setNN(NN);
 	}	
+	
+	// ****************Calculate horizontal **************
+	private void PowerHorizontally(double NN) {
+		spaceship.setAccelerateX(spaceship.getAccelerateX()-getTotalEnginePower(NN));
+	}
 
-	// ************************** update Fuel ********************
-	private void updateFuel() {
-		spaceship.setFuel_amount(spaceship.getFuel_amount()-
-				(spaceship.dt*(spaceship.MAIN_ENGINE_CONSUMPTION+spaceship.SECOND_ENGINE_CONSUMPTION*8)));
+	// **************** Calculate vertical ***************
+	private void PowerVertically(double NN) {
+		spaceship.setAccelerateY(spaceship.getAccelerateY()+getTotalEnginePower(NN));
 	}
 
 	// ************************** update Altitude ****************
 	private void updateAltitude() {
 		spaceship.setAltitude(spaceship.getAltitude()+
-				Formulas.getDisplacement( spaceship.dt, spaceship.getVertical_speed(),
-						spaceship.getAccelerateY() ))	;
+				Formulas.calcDisplacement( 1, spaceship.getVertical_speed(),
+						spaceship.getAccelerateY()))	;
+	}
+	
+	// ************************** update Distance ****************
+	private void updateDistance() {
+		spaceship.setDistance(spaceship.getDistance() - spaceship.getHorizontal_speed());
+	}
+	
+	// ************************** update Fuel ********************
+	private void updateFuel() {
+		spaceship.setFuel_amount(spaceship.getFuel_amount()-
+				(spaceship.MAIN_ENGINE_CONSUMPTION+spaceship.SECOND_ENGINE_CONSUMPTION*8)*NN);
 	}
 
 	// ************************** update speed *******************
 	private void updateSpeed() {
-		spaceship.setHorizontal_speed(spaceship.getHorizontal_speed()+
-				Formulas.getVelocity( spaceship.dt, spaceship.getAccelerateX() ));
-		spaceship.setVertical_speed(spaceship.getVertical_speed()+
-				Formulas.getVelocity( spaceship.dt, spaceship.getAccelerateY() ));
-	}
-	// ************************** Total Weight *******************
-	public double getTotalWeight() {
-		return spaceship.WEIGHT_CRAFT + spaceship.getFuel_amount();
+		spaceship.setHorizontal_speed(spaceship.getHorizontal_speed()+spaceship.getAccelerateX());
+		spaceship.setVertical_speed(spaceship.getVertical_speed()+spaceship.getAccelerateY());
 	}
 
 	// ************************** Engine Power *******************
-	public double getTotalEnginePower() {
-		double weight = getTotalWeight();
-		double force  = spaceship.MAIN_ENGINE_POWER + spaceship.SECOND_ENGINE_POWER * 8;
-		return Formulas.getAccNewton2( force, weight );
+	public double getTotalEnginePower(double NN) {
+		double weight = spaceship.WeightSpaces();
+		double force  = (spaceship.MAIN_ENGINE_POWER + spaceship.SECOND_ENGINE_POWER * 8) * NN;
+		return Formulas.calcAccelerationByNewton( force, weight );
 	}
+	
+	 private void setNN(double nn) {
+		 NN = nn;
+		 if(nn > 1) {NN = 1;}
+		 if(nn < 0) {NN = 0;}
+	 }
+	
 	// ************************** update pid **********************
 	 private void defineLandingPath() {
 	    	this.destination_points = new ArrayList<Point>();
