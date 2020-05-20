@@ -3,7 +3,7 @@
 Simulation of the spacecraft's landing on the Moon
 
 author's:
-Or Shemesh && Nathaniel Davidov && Maxim Marmer
+Or Shemesh && Netanel Davidov && Maxim Marmer
 
            The landing data from the information obtained from the simulation
 
